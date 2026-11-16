@@ -11,9 +11,10 @@ st.set_page_config(
 
 # Dynamic configuration to allow local, docker, and cloud environments to connect correctly
 def get_api_url():
+    # Prioritize the environment variable set in Render's dashboard settings
     if "API_URL" in os.environ:
         return os.environ["API_URL"]
-    # Try to check if 'api' container is pingable, otherwise fallback to localhost
+    # Fallback order: Check docker-compose network container 'api', else default to localhost
     try:
         requests.get("http://api:8000/", timeout=1)
         return "http://api:8000/predict"

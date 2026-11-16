@@ -91,9 +91,9 @@ if st.sidebar.button("Run Predictor Inference", type="primary"):
                 st.metric("Churn Probability", f"{result['churn_probability']}%")
             with col2:
                 if result['churn_prediction'] == 1:
-                    st.error(f"🚨 Status: {result['status']}")
+                    st.error(f"🚨 Customer is likely to churn!")
                 else:
-                    st.success(f"✅ Status: {result['status']}")
+                    st.success(f"✅ Customer is likely to stay retained.")
 
             # Strategic Key Takeaways
             st.subheader("ℹ️ Strategic Key Takeaways")

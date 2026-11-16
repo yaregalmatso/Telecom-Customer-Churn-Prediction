@@ -1,3 +1,4 @@
+%%writefile app.py
 import streamlit as st
 import requests
 import os
@@ -8,8 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# FastAPI server configuration (Assuming Docker network or local host default)
-#API_URL = "http://api:8000/predict" # Docker container name service resolution
+# Dynamic configuration to allow local, docker, and cloud environments to connect correctly
 def get_api_url():
     if "API_URL" in os.environ:
         return os.environ["API_URL"]
@@ -19,7 +19,9 @@ def get_api_url():
         return "http://api:8000/predict"
     except Exception:
         return "http://127.0.0.1:8000/predict"
+
 API_URL = get_api_url()
+
 st.title("📊 Telecom Customer Churn Dashboard")
 st.markdown(f"Adjust customer parameters on the left sidebar to communicate directly with the **FastAPI ML Server** at `{API_URL}`!")
 
@@ -82,7 +84,7 @@ if st.sidebar.button("Run Predictor Inference", type="primary"):
         if response.status_code == 200:
             result = response.json()
             churn_probability = result['churn_probability'] / 100.0
-            
+
             col1, col2 = st.columns(2)
             with col1:
                 st.metric("Churn Probability", f"{result['churn_probability']}%")
@@ -91,7 +93,7 @@ if st.sidebar.button("Run Predictor Inference", type="primary"):
                     st.error(f"🚨 Status: {result['status']}")
                 else:
                     st.success(f"✅ Status: {result['status']}")
-            
+
             # Strategic Key Takeaways
             st.subheader("ℹ️ Strategic Key Takeaways")
             if churn_probability >= 0.80:
@@ -109,4 +111,4 @@ if st.sidebar.button("Run Predictor Inference", type="primary"):
         else:
             st.error(f"Error from server: {response.text}")
     except Exception as e:
-        st.error(f"Could not connect to FastAPI server. Details: {e}")
+        st.error(f"Could not connect to FastAPI server at {API_URL}. Details: {e}")

@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - MODEL_PATH=/app/models/final_model_pipeline.joblib
+
+  frontend:
+    build: .
+    container_name: frontend
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    command: streamlit run app.py --server.port 8501 --server.address 0.0.0.0

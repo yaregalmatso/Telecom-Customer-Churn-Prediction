@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL archive folders
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Jupyter Notebook and temporary files
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.git/
+.gitignore
+nohup.out
+mlflow.db
+
+# Docker metadata and local models directory if loaded dynamically
+# (Avoid baking heavy local weight binaries directly if using mounted volumes)
+# models/*.joblib

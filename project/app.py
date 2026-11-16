@@ -24,7 +24,7 @@ def get_api_url():
 API_URL = get_api_url()
 
 st.title("📊 Telecom Customer Churn Dashboard")
-st.markdown(f"Adjust customer parameters on the left sidebar to communicate directly with the **FastAPI ML Server** at `{API_URL}`!")
+st.markdown(f"Adjust customer parameters on the left sidebar to communicate directly with the **FastAPI ML Server**!")
 
 # Sidebar input setup
 st.sidebar.header("👤 Customer Profile")

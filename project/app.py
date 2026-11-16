@@ -8,10 +8,19 @@ st.set_page_config(
 )
 
 # FastAPI server configuration (Assuming Docker network or local host default)
-API_URL = "http://api:8000/predict" # Docker container name service resolution
-
+#API_URL = "http://api:8000/predict" # Docker container name service resolution
+def get_api_url():
+    if "API_URL" in os.environ:
+        return os.environ["API_URL"]
+    # Try to check if 'api' container is pingable, otherwise fallback to localhost
+    try:
+        requests.get("http://api:8000/", timeout=1)
+        return "http://api:8000/predict"
+    except Exception:
+        return "http://127.0.0.1:8000/predict"
+API_URL = get_api_url()
 st.title("📊 Telecom Customer Churn Dashboard")
-st.markdown("Adjust customer parameters on the left sidebar to communicate directly with the **FastAPI ML Server**!")
+st.markdown(f"Adjust customer parameters on the left sidebar to communicate directly with the **FastAPI ML Server** at `{API_URL}`!")
 
 # Sidebar input setup
 st.sidebar.header("👤 Customer Profile")
